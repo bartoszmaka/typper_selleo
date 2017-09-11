@@ -1,9 +1,7 @@
 # README
 
-[![Build Status](https://travis-ci.org/bartoszmaka/typper_selleo.svg?branch=master)](https://travis-ci.org/bartoszmaka/typper_selleo)<
-
+[![Build Status](https://travis-ci.org/bartoszmaka/typper_selleo.svg?branch=master)](https://travis-ci.org/bartoszmaka/typper_selleo)
 This README would normally document whatever steps are necessary to get the
-
 application up and running.
 
 Things you may want to cover:
