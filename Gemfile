@@ -15,12 +15,19 @@ gem 'rails', '~> 5.1.3'
 gem 'sass-rails', '~> 5.0'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'rails-patterns'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails', '~> 0.3.6'
   gem 'rspec-rails', '~> 3.6'
   gem 'rubocop', '~> 0.49.1', require: false
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'vcr', '~> 3.0', '>= 3.0.3'
+  gem 'webmock', '~> 3.0', '>= 3.0.1'
 end
 
 group :development do
