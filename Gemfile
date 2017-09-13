@@ -18,6 +18,9 @@ gem 'uglifier', '>= 1.3.0'
 gem 'rails-patterns'
 
 group :development, :test do
+  gem 'factory_girl', '~> 4.8.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails', '~> 0.3.6'
   gem 'rspec-rails', '~> 3.6'
@@ -26,6 +29,7 @@ end
 
 group :test do
   gem 'database_cleaner'
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock', '~> 3.0', '>= 3.0.1'
 end

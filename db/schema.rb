@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170913070839) do
+ActiveRecord::Schema.define(version: 20170913132830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "football_matches", force: :cascade do |t|
+    t.bigint "away_team_id"
+    t.bigint "home_team_id"
+    t.integer "away_team_score"
+    t.integer "home_team_score"
+    t.datetime "match_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["away_team_id"], name: "index_football_matches_on_away_team_id"
+    t.index ["home_team_id"], name: "index_football_matches_on_home_team_id"
+  end
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
@@ -30,4 +42,6 @@ ActiveRecord::Schema.define(version: 20170913070839) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "football_matches", "teams", column: "away_team_id"
+  add_foreign_key "football_matches", "teams", column: "home_team_id"
 end
