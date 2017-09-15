@@ -1,3 +1,5 @@
-factory :team do
-  name
+FactoryGirl.define do
+  factory :team do
+    name 'Real'
+  end
 end

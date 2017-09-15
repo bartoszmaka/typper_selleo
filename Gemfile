@@ -18,7 +18,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'rails-patterns'
 
 group :development, :test do
-  gem 'factory_girl', '~> 4.8.0'
+  gem 'factory_girl_rails', '~> 4.8.0'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
