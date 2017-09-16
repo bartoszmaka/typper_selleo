@@ -25,7 +25,7 @@ describe ImportMatches do
 
         barcelona = create(:team, name: 'Barcelona')
         real = create(:team, name: 'Real Madryt')
-        
+
         allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
         allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
 
@@ -73,7 +73,7 @@ describe ImportMatches do
       barcelona = create(:team, name: 'Barcelona')
       real = create(:team, name: 'Real Madryt')
 
-      
+
       allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
       allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
 
@@ -116,8 +116,13 @@ describe ImportMatches do
         2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
       RATE_PLAN
 
+      monaco = create(:team, name: 'Monaco')
+      porto = create(:team, name: 'Porto')
+      barcelona = create(:team, name: 'Barcelona')
+      real = create(:team, name: 'Real Madryt')
+
       ImportMatches.call
-      
+
       allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
       allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
 
@@ -156,7 +161,7 @@ describe ImportMatches do
         2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
       RATE_PLAN
 
-      
+
       allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1_after_call) }
       allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2_after_call) }
 
