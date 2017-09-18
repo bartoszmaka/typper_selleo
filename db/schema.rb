@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20170915135145) do
     t.bigint "home_team_id"
     t.integer "away_team_score"
     t.integer "home_team_score"
-    t.datetime "match_date", null: false
+    t.datetime "match_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "round_id"
@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 20170915135145) do
 
   create_table "rounds", force: :cascade do |t|
     t.integer "year"
-    t.integer "integer"
     t.integer "number"
   end
 
