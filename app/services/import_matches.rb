@@ -5,30 +5,31 @@ class ImportMatches < Patterns::Service
     end
   end
 
-  def create_matches_for_given_week(week)
-    match_attributes_collection = GoalComWrapper.get_round(week)
-    round = Round.find_or_create_by(year: 2017, number: week)
-    match_attributes_collection.each do |match_attributes_hash|
-      home_team = Team.find_by!(name: match_attributes_hash[:home_team_name])
-      away_team = Team.find_by!(name: match_attributes_hash[:away_team_name])
+ def create_matches_for_given_week(week)
+    attribute_hashes_collection = GoalComWrapper.get_round(week)
+    attribute_hashes_collection.map do |attributes_hash|
+      home_team = Team.find_by!(name: attributes_hash[:home_team_name])
+      away_team = Team.find_by!(name: attributes_hash[:away_team_name])
+      round_year = attributes_hash[:round_year]
+      round_number = attributes_hash[:round_number]
+      round = Round.find_or_create_by(year: round_year, number: round_number)
       match_attributes = {
-        match_date: match_attributes_hash[:match_date],
+        match_date: attributes_hash[:match_date],
         home_team: home_team,
         away_team: away_team,
-        round_id: round.id,
+        round_id: round.id
       }
-
-      FootballMatch.find_or_create_by(
-        match_attributes.merge(score_attributes(match_attributes_hash))
-      )
+      football_match = FootballMatch.find_or_create_by(match_attributes)
+      if attributes_hash[:completed]
+        football_match.update_attributes(score_attributes(attributes_hash))
+      end
     end
   end
 
-  def score_attributes(match_attributes_hash)
-    return unless match_attributes_hash[:completed]
+  def score_attributes(attributes_hash)
     {
-      home_team_score: match_attributes_hash[:home_team_score],
-      rway_team_score: match_attributes_hash[:away_team_score]
+      home_team_score: attributes_hash[:home_team_score],
+      away_team_score: attributes_hash[:away_team_score]
     }
   end
 
