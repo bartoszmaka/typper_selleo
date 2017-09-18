@@ -9,13 +9,13 @@ describe ImportMatches do
           time              | team_home   | team_away     | score_away | score_home | completed
           ------------------+-------------+---------------+------------+------------------------
           2017/09/10 12:30  | Monaco      |   Porto       |     0      |      0     | false
-          2017/09/11 12:45  | Real Madryt |   Barcelona   |     0      |      0     | false
+          2017/09/11 12:45  | Real Madrid |   Barcelona   |     0      |      0     | false
         RATE_PLAN
         matches_table_page_2 = <<~RATE_PLAN
           WEEK 2
           time              | team_home  | team_away     | score away | score home | completed
           ------------------+-------------+---------------+-------------------------------------
-          2017/11/20 12:30  | Monaco      |   Real Madryt |      0     |      0     | false
+          2017/11/20 12:30  | Monaco      |   Real Madrid |      0     |      0     | false
           2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
         RATE_PLAN
 
@@ -23,15 +23,14 @@ describe ImportMatches do
         porto = create(:team, name: 'Porto')
 
         barcelona = create(:team, name: 'Barcelona')
-        real = create(:team, name: 'Real Madryt')
+        real = create(:team, name: 'Real Madrid')
 
         allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
         allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
 
-        # ImportMatches.call
         expect do
           ImportMatches.call
-        end.to change{ FootballMatch.count}.by(4).and change{ Round.count }.by(2)
+        end.to change { FootballMatch.count }.by(4).and change{ Round.count }.by(2)
 
         expect(Round.all).to include(
           have_attributes(year: 2017, number: 1),
@@ -42,10 +41,10 @@ describe ImportMatches do
         round_second = Round.find_by(year: 2017, number: 2)
 
         expect(FootballMatch.all).to include(
-          have_attributes(match_date:  DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id:round_first.id ),
-          have_attributes(match_date:  DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: nil, away_team_score: nil, round_id: round_first.id),
-          have_attributes(match_date:  DateTime.new(2017, 11, 20, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
-          have_attributes(match_date:  DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id)
+          have_attributes(match_date: DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id:round_first.id),
+          have_attributes(match_date: DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: nil, away_team_score: nil, round_id: round_first.id),
+          have_attributes(match_date: DateTime.new(2017, 11, 20, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
+          have_attributes(match_date: DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id)
         )
       end
     end
@@ -54,24 +53,24 @@ describe ImportMatches do
   context 'when one round is completed' do
     it 'two Matches will have set score' do
       matches_table_page_1 = <<~RATE_PLAN
-        WEEK 1
+        WEEK 1 >
         Time              | Team  home  | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+------------+------------------------
         2017/09/10 12:30  | Monaco      |   Porto       |     2      |      1     | true
-        2017/09/11 12:45  | Real Madryt |   Barcelona   |     3      |      5     | true
+        2017/09/11 12:45  | Real Madrid |   Barcelona   |     3      |      5     | true
        RATE_PLAN
       matches_table_page_2 = <<~RATE_PLAN
       WEEK 2
         Time              | Team home   | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+-------------------------------------
-        2017/11/20 12:30  | Monaco      |   Real Madryt |      0     |      0     | false
+        2017/11/20 12:30  | Monaco      |   Real Madrid |      0     |      0     | false
         2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
       RATE_PLAN
 
       monaco = create(:team, name: 'Monaco')
       porto = create(:team, name: 'Porto')
       barcelona = create(:team, name: 'Barcelona')
-      real = create(:team, name: 'Real Madryt')
+      real = create(:team, name: 'Real Madrid')
 
 
       allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
@@ -91,10 +90,10 @@ describe ImportMatches do
       round_second = Round.find_by(year: 2017, number: 2)
 
       expect(FootballMatch.all).to include(
-        have_attributes(match_date:  DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: 2, away_team_score: 1, round_id:round_first.id),
-        have_attributes(match_date:  DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: 3, away_team_score: 5, round_id: round_first.id),
-        have_attributes(match_date:  DateTime.new(2017, 11, 20, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
-        have_attributes(match_date:  DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id)
+        have_attributes(match_date: DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: 2, away_team_score: 1, round_id:round_first.id),
+        have_attributes(match_date: DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: 3, away_team_score: 5, round_id: round_first.id),
+        have_attributes(match_date: DateTime.new(2017, 11, 20, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
+        have_attributes(match_date: DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id)
       )
     end
   end
@@ -102,24 +101,24 @@ describe ImportMatches do
   context 'when one round was completed after call first' do
     it 'will update score' do
       matches_table_page_1 = <<~RATE_PLAN
-        WEEK 1
+        WEEK 1 >
         Time              | Team  home  | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+------------+------------------------
         2017/09/10 12:30  | Monaco      |   Porto       |     0      |      0     | false
-        2017/09/11 12:45  | Real Madryt |   Barcelona   |     0      |      0     | false
+        2017/09/11 12:45  | Real Madrid |   Barcelona   |     0      |      0     | false
        RATE_PLAN
       matches_table_page_2 = <<~RATE_PLAN
       WEEK 2
         Time              | Team home   | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+-------------------------------------
-        2017/11/20 12:30  | Monaco      |   Real Madryt |      0     |      0     | false
+        2017/11/20 12:30  | Monaco      |   Real Madrid |      0     |      0     | false
         2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
       RATE_PLAN
 
       monaco = create(:team, name: 'Monaco')
       porto = create(:team, name: 'Porto')
       barcelona = create(:team, name: 'Barcelona')
-      real = create(:team, name: 'Real Madryt')
+      real = create(:team, name: 'Real Madrid')
 
       ImportMatches.call
 
@@ -140,7 +139,7 @@ describe ImportMatches do
       round_second = Round.find_by(year: 2017, number: 2)
 
       expect(FootballMatch.all).to include(
-        have_attributes(match_date: DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id:round_first.id ),
+        have_attributes(match_date: DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id:round_first.id),
         have_attributes(match_date: DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: nil, away_team_score: nil, round_id: round_first.id),
         have_attributes(match_date: DateTime.new(2017, 11, 10, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
         have_attributes(match_date: DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
@@ -151,13 +150,13 @@ describe ImportMatches do
         Time              | Team  home  | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+------------+------------------------
         2017/09/10 12:30  | Monaco      |   Porto       |     1      |      5     | true
-        2017/09/11 12:45  | Real Madryt |   Barcelona   |     0      |      0     | false
+        2017/09/11 12:45  | Real Madrid |   Barcelona   |     0      |      0     | false
        RATE_PLAN
       matches_table_page_2_after_call = <<~RATE_PLAN
       WEEK 2
         Time              | Team home   | Team away     | Score away | Score home | completed
         ------------------+-------------+---------------+-------------------------------------
-        2017/11/20 12:30  | Monaco      |   Real Madryt |      0     |      0     | false
+        2017/11/20 12:30  | Monaco      |   Real Madrid |      0     |      0     | false
         2017/11/21 12:45  | Barcelona   |   Porto       |      0     |      0     | false
       RATE_PLAN
 
@@ -173,10 +172,10 @@ describe ImportMatches do
       round_second = Round.find_by(year: 2017, number: 2)
 
       expect(FootballMatch.all).to include(
-        have_attributes(match_date: DateTime.parse("2017/09/10 12:30"), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: 1, away_team_score: 5, round_id:round_first.id ),
-        have_attributes(match_date: DateTime.parse("2017/09/11 12:45"), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: nil, away_team_score: nil, round_id: round_first.id),
-        have_attributes(match_date: DateTime.parse("2017/11/20 12:30"), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
-        have_attributes(match_date: DateTime.parse("2017/11/21 12:45"), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
+        have_attributes(match_date: DateTime.new(2017, 9, 10, 12, 30), home_team_id: monaco.id, away_team_id: porto.id, home_team_score: 1, away_team_score: 5, round_id:round_first.id),
+        have_attributes(match_date: DateTime.new(2017, 9, 11, 12, 45), home_team_id: real.id, away_team_id: barcelona.id, home_team_score: nil, away_team_score: nil, round_id: round_first.id),
+        have_attributes(match_date: DateTime.new(2017, 11, 10, 12, 30), home_team_id: monaco.id, away_team_id: real.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
+        have_attributes(match_date: DateTime.new(2017, 11, 21, 12, 45), home_team_id: barcelona.id, away_team_id: porto.id, home_team_score: nil, away_team_score: nil, round_id: round_second.id),
       )
     end
   end
@@ -187,7 +186,7 @@ end
     tabular_data.lines[3..-1].map do |line|
       date, home_team_name, away_team_name, home_team_score,
         away_team_score, completed = line.split('|').map(&:strip)
-        match_date = DateTime.parse(date)
+      match_date = DateTime.parse(date)
       {
         match_date: match_date,
         home_team_name: home_team_name,

@@ -3,11 +3,12 @@ class ImportTeams < Patterns::Service
   URL = 'http://www.goal.com/en/uefa-champions-league/fixtures-results/week-1/4oogyu6o156iphvdvphwpck10'.freeze
 
   def call
-    parse_team.map { |team| Team.find_or_create_by(name: team.text) }
+    teams_from_website.map { |team| Team.find_or_create_by(name: team.text) }
   end
 
   private
-  def parse_team
+
+  def teams_from_website
     doc = Nokogiri::HTML(open(URL))
     doc.css('span.team-name')
   end

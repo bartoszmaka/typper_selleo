@@ -6,5 +6,5 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-team_create = ImportTeams.call
-puts "Teams was created"
+ImportTeams.call
+puts "Teams were imported"

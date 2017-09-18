@@ -1,6 +1,4 @@
 class GoalComWrapper
-  def self.get_round(args)
-    {
-    }
+  def self.get_round(*)
   end
 end
