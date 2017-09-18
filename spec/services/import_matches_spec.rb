@@ -97,7 +97,7 @@ describe ImportMatches do
   end
 
   context 'when one round was completed' do
-    context 'run second time' do
+    context 'and run second time' do
       it 'updates score' do
         matches_table_page_1 = <<~RATE_PLAN
           WEEK 1 >
@@ -142,7 +142,7 @@ describe ImportMatches do
         )
 
         matches_table_page_1_after_call = <<~RATE_PLAN
-          WEEK 1
+          WEEK 1 >
           Time              | Team  home  | Team away     | Score away | Score home | completed
           ------------------+-------------+---------------+------------+------------------------
           2017/09/10 12:30  | Monaco      |   Porto       |     1      |      5     | true
@@ -176,10 +176,81 @@ describe ImportMatches do
       end
     end
   end
+
+
+  context'when are one round and two matches in round' do
+    it 'set one round and two' do
+      matches_table_page_1 = <<~RATE_PLAN
+        WEEK 1 >
+        Time              | Team  home  | Team away     | Score away | Score home | completed
+        ------------------+-------------+---------------+------------+------------------------
+        2017/09/10 12:30  | Monaco      |   Porto       |     0      |      0     | false
+        2017/09/11 12:45  | Real Madrid |   Barcelona   |     0      |      0     | false
+       RATE_PLAN
+
+      create(:team, name: 'Monaco')
+      create(:team, name: 'Porto')
+      create(:team, name: 'Barcelona')
+      create(:team, name: 'Real Madrid')
+
+      allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
+
+      expect do
+        ImportMatches.call
+      end.to change { FootballMatch.count }.by(2).and change { Round.count }.by(1)
+    end
+  end
+
+  context 'when are thee round and three matches in round ' do
+    it 'set one round and two' do
+      matches_table_page_1 = <<~RATE_PLAN
+        WEEK 1 >
+        Time              | Team  home  | Team away     | Score away | Score home | completed
+        ------------------+-------------+---------------+------------+------------------------
+        2017/09/10 12:30  | Monaco      |   Porto       |     0      |      0     | false
+        2017/09/11 12:45  | Real Madrid |   Barcelona   |     0      |      0     | false
+        2017/09/11 12:45  | Qarabağ     |   Ac Milan    |     0      |      0     | false
+       RATE_PLAN
+
+      matches_table_page_2 = <<~RATE_PLAN
+         WEEK 2 >
+         Time              | Team  home  | Team away     | Score away | Score home | completed
+         ------------------+-------------+---------------+------------+------------------------
+         2017/09/20 12:30  | Monaco      |   Qarabağ     |     0      |      0     | false
+         2017/09/20 12:45  | Ac Milan    |   Barcelona   |     0      |      0     | false
+         2017/09/21 12:45  | Porto       |   Real Madrid |     0      |      0     | false
+        RATE_PLAN
+
+      matches_table_page_3 = <<~RATE_PLAN
+          WEEK 3
+          Time              | Team  home  | Team away     | Score away | Score home | completed
+          ------------------+-------------+---------------+------------+------------------------
+          2017/10/10 12:30  | Barcelona   |   Porto       |     0      |      0     | false
+          2017/10/11 12:45  | Real Madrid |   Qarabağ     |     0      |      0     | false
+          2017/10/11 12:45  | Monaco      |   Ac Milan    |     0      |      0     | false
+         RATE_PLAN
+
+      create(:team, name: 'Monaco')
+      create(:team, name: 'Porto')
+      create(:team, name: 'Barcelona')
+      create(:team, name: 'Real Madrid')
+      create(:team, name: 'Qarabağ')
+      create(:team, name: 'Ac Milan')
+
+      allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
+      allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
+      allow(GoalComWrapper).to receive(:get_round).with(3) { result_from(matches_table_page_3) }
+
+      expect do
+        ImportMatches.call
+      end.to change { FootballMatch.count }.by(9).and change { Round.count }.by(3)
+    end
+  end
 end
 
   def result_from(tabular_data)
     round_number = tabular_data.lines.first.split(' ').second.to_i
+    next_round = tabular_data.lines.first.split(' ').third
     tabular_data.lines[3..-1].map do |line|
       date, home_team_name, away_team_name, home_team_score,
         away_team_score, completed = line.split('|').map(&:strip)
@@ -192,7 +263,8 @@ end
         away_team_score: away_team_score.to_i,
         completed: completed == 'true',
         round_year: match_date.year,
-        round_number: round_number
+        round_number: round_number,
+        next_round: next_round == '>'
       }
     end
   end
