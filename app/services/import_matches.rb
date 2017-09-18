@@ -20,23 +20,24 @@ class ImportMatches < Patterns::Service
         away_team: away_team,
         round_id: round.id,
        }
+
       FootballMatch.find_or_create_by(
-        match_attributes.merge!(score_attributes(attributes_hash))
+        match_attributes.merge(score_attributes(attributes_hash))
       )
     end
+  end
 
-    def score_attributes(attributes_hash)
-      if attributes_hash[:completed]
-        {
-          home_team_score: attributes_hash[:home_team_score],
-          away_team_score: attributes_hash[:away_team_score]
-        }
-      else
-        {
-          home_team_score: nil,
-          away_team_score: nil
-        }
-      end
+  def score_attributes(attributes_hash)
+    if attributes_hash[:completed]
+      {
+        home_team_score: attributes_hash[:home_team_score],
+        away_team_score: attributes_hash[:away_team_score]
+      }
+    else
+      {
+        home_team_score: nil,
+        away_team_score: nil
+      }
     end
   end
 end

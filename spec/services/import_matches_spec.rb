@@ -98,7 +98,6 @@ describe ImportMatches do
       )
     end
   end
-<<<<<<< HEAD
   context 'when one round was completed after call first' do
     it 'will update score' do
       matches_table_page_1 = <<~RATE_PLAN
@@ -180,99 +179,21 @@ describe ImportMatches do
       )
     end
   end
-=======
->>>>>>> 55b1919... Add ImporterMatche service
 end
 
- # allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
- # allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
-
   def result_from(tabular_data)
-    round_number = tabular_data.lines.first.split(' ').first.to_i
+    round_number = tabular_data.lines.first.split(' ').second.to_i
     tabular_data.lines[3..-1].map do |line|
       match_attribute_values = line.split('|').map(&:strip)
+        match_date = DateTime.parse(match_attribute_values[0])
       {
-        match_date: DateTime.parse(match_attribute_values[0]),
+        match_date: match_date,
         home_team_name: match_attribute_values[1],
         away_team_name: match_attribute_values[2],
         home_team_score: match_attribute_values[3].to_i,
         away_team_score: match_attribute_values[4].to_i,
         completed: match_attribute_values[5] == 'true',
-        round_id: Round.find_by(year: 2017, number: round_number )
+        round_id: Round.find_by(year: match_date.year, number: round_number )
       }
     end
   end
-
-
-
-      # [
-      #   {
-      #     match_data: '2017/09/10 12:30',
-      #     home_team: 'Monaco',
-      #     away_team: 'Porto',
-      #     home_team_score: 0,
-      #     away_team_score: 0
-      #   },
-      #   {
-      #     match_data: '2017/09/11 12:45',
-      #     home_team: 'Real Madryt',
-      #     away_team: 'Barcelona',
-      #     home_team_score: 0,
-      #     away_team_score: 0
-      #   },
-      #   {
-      #     match_data: '2017/11/20 12:30',
-      #     home_team: 'Monaco',
-      #     away_team: 'Real Madryt',
-      #     home_team_score: 0,
-      #     away_team_score: 0
-      #   },
-      #   {
-      #     match_data: '2017/11/21 12:45',
-      #     home_team: 'Barcelona',
-      #     away_team: 'Porto',
-      #     home_team_score: 0,
-      #     away_team_score: 0
-      #   }
-      # ]
-    # end
-#   it 'creates 96 matches in total' do
-#     expect { call_match_loader }.to change { FootballMatch.count }.by 96
-#   end
-#
-#   it 'is idempotent service' do
-#     call_match_loader
-#     expect(FootballMatch.count).to eq(96)
-#     call_match_loader
-#     expect(FootballMatch.count).to eq(96)
-#   end
-#
-#   it 'has exactly 16 matches per round' do
-#     call_match_loader
-#
-#     expect(Round.sort_by(&:matches).first.count).to eq 16
-#     expect(Round.sort_by(&:matches).last.count).to eq 16
-#   end
-# end
-#
-# def call_match_loader
-#   team_casset = 'team_web_collection'
-#   VCR.use_cassette(team_casset) do
-#     ImportMatches.call.result
-#   end
-# end
-#
-# #   keys = tabular_data.lines[0].chomp
-# #   match_first  = tabular_data.lines[2].chomp
-# #   match_second = tabular_data.lines[3].chomp
-# #
-# #
-# # [{},{}]
-# # [
-# #   {match: {data: asas, te}, round: {atributes} }
-# #   {match: {attribute}, round: {atributes} }
-# #   {match_1_attributes},
-# #   {match_2_attributes},
-# #   {match_3_attributes},
-# #   {match_4_attributes}
-# # ]
