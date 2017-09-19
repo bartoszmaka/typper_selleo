@@ -21,3 +21,5 @@
 tags
 TODO.md
 config/database.yml
+.rvmrc
+.env
