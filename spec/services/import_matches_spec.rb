@@ -25,8 +25,9 @@ describe ImportMatches do
         barcelona = create(:team, name: 'Barcelona')
         real = create(:team, name: 'Real Madrid')
 
-        allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
-        allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
+        allow(GoalComWrapper).to receive(:each_round)
+                             .and_yield(result_from(matches_table_page_1))
+                             .and_yield(result_from(matches_table_page_2))
 
         expect do
           ImportMatches.call
@@ -72,8 +73,9 @@ describe ImportMatches do
       barcelona = create(:team, name: 'Barcelona')
       real = create(:team, name: 'Real Madrid')
 
-      allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
-      allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
+      allow(GoalComWrapper).to receive(:each_round)
+                           .and_yield(result_from(matches_table_page_1))
+                           .and_yield(result_from(matches_table_page_2))
 
       expect do
         ImportMatches.call
@@ -119,8 +121,9 @@ describe ImportMatches do
         barcelona = create(:team, name: 'Barcelona')
         real = create(:team, name: 'Real Madrid')
 
-        allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
-        allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
+        allow(GoalComWrapper).to receive(:each_round)
+                             .and_yield(result_from(matches_table_page_1))
+                             .and_yield(result_from(matches_table_page_2))
 
         expect do
           ImportMatches.call
@@ -157,8 +160,9 @@ describe ImportMatches do
         RATE_PLAN
 
 
-        allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1_after_call) }
-        allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2_after_call) }
+        allow(GoalComWrapper).to receive(:each_round)
+                             .and_yield(result_from(matches_table_page_1_after_call))
+                             .and_yield(result_from(matches_table_page_2_after_call))
 
         expect do
           ImportMatches.call
@@ -193,7 +197,7 @@ describe ImportMatches do
       create(:team, name: 'Barcelona')
       create(:team, name: 'Real Madrid')
 
-      allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
+      allow(GoalComWrapper).to receive(:each_round).and_yield(result_from(matches_table_page_1))
 
       expect do
         ImportMatches.call
@@ -237,34 +241,32 @@ describe ImportMatches do
       create(:team, name: 'Qarabağ')
       create(:team, name: 'Ac Milan')
 
-      allow(GoalComWrapper).to receive(:get_round).with(1) { result_from(matches_table_page_1) }
-      allow(GoalComWrapper).to receive(:get_round).with(2) { result_from(matches_table_page_2) }
-      allow(GoalComWrapper).to receive(:get_round).with(3) { result_from(matches_table_page_3) }
+      allow(GoalComWrapper).to receive(:each_round)
+                           .and_yield(result_from(matches_table_page_1))
+                           .and_yield(result_from(matches_table_page_2))
+                           .and_yield(result_from(matches_table_page_3))
 
       expect do
         ImportMatches.call
       end.to change { FootballMatch.count }.by(9).and change { Round.count }.by(3)
     end
   end
-end
 
   def result_from(tabular_data)
     round_number = tabular_data.lines.first.split(' ').second.to_i
-    next_round = tabular_data.lines.first.split(' ').third
-    tabular_data.lines[3..-1].map do |line|
+    matches = tabular_data.lines[3..-1].map do |line|
       date, home_team_name, away_team_name, home_team_score,
         away_team_score, completed = line.split('|').map(&:strip)
       match_date = DateTime.parse(date)
-      {
+      OpenStruct.new(
         match_date: match_date,
         home_team_name: home_team_name,
         away_team_name: away_team_name,
         home_team_score: home_team_score.to_i,
         away_team_score: away_team_score.to_i,
         completed: completed == 'true',
-        round_year: match_date.year,
-        round_number: round_number,
-        next_round: next_round == '>'
-      }
+      )
     end
+     OpenStruct.new(number: round_number, year: matches.first.match_date.year, matches: matches)
   end
+end
