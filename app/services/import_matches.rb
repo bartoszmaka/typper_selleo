@@ -41,7 +41,7 @@ class ImportMatches < Patterns::Service
     end
 
     def completed?
-      match_attributes.completed
+      match_attributes.completed?
     end
 
     def football_match
