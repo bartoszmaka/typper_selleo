@@ -37,14 +37,14 @@ class ImportMatches < Patterns::Service
     end
 
     def call
-      update_football_score
+      update_score
     end
 
     def completed?
       match_attributes.completed?
     end
 
-    def football_match
+    def match
       FootballMatch.find_or_create_by(
         match_date: match_attributes.match_date,
         home_team_id: home_team.id,
@@ -58,13 +58,13 @@ class ImportMatches < Patterns::Service
     end
 
     def away_team
-      Team.find_by(name: match_attributes.away_team_name)
+      Team.find_by!(name: match_attributes.away_team_name)
     end
 
-    def update_football_score
-      football_match
+    def update_score
+      match
       if completed?
-        football_match.update_attributes(
+        match.update_attributes(
           home_team_score: match_attributes.home_team_score,
           away_team_score: match_attributes.away_team_score
         )

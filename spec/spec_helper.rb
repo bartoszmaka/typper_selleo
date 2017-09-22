@@ -14,7 +14,10 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'webmock/rspec'
+require 'capybara/rspec'
+require 'rspec/matchers/fail_matchers'
 RSpec.configure do |config|
+  config.include RSpec::Matchers::FailMatchers
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

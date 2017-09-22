@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -13,22 +13,23 @@ gem 'omniauth-google-oauth2', '~> 0.5.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.1.3'
+gem 'rails-patterns'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'rails-patterns'
 
 group :development, :test do
-  gem 'factory_girl_rails', '~> 4.8.0'
-  gem 'dotenv-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
+  gem 'factory_girl_rails', '~> 4.8.0'
   gem 'pry-rails', '~> 0.3.6'
   gem 'rspec-rails', '~> 3.6'
   gem 'rubocop', '~> 0.49.1', require: false
 end
 
 group :test do
+  gem 'capybara'
   gem 'database_cleaner'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
@@ -42,4 +43,4 @@ group :development do
   gem 'web-console', '>= 3.3.0'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
