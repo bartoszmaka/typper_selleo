@@ -1,0 +1,26 @@
+<table class="table table-hover table-inverse">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <% rounds.map do |round| %>
+        <th>Round<%= round.number %></th>
+      <% end %>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <% rounds.each do |round| %>
+          <% if round.winner == user && round.user_score(user.id) > 0 %>
+            <td class= 'bg-info'><strong><%= round.user_score(user.id) %></strong></td>
+          <% else %>
+            <td><%= round.user_score(user.id) %></td>
+          <% end %>
+        <% end %>
+        <td><%= user.total_points %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

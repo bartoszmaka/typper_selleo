@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+  <%= link_to "Typper App", root_path, class: 'navbar-brand' %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <%= link_to "Match", root_path, class: 'nav-link'  %></a>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Scoreboard", scoreboards_path,class: 'nav-link' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Update score', football_matches_path, method: :post, class: 'nav-link' if current_user&.admin? %>
+      </li>
+    </ul>
+  </div>
+</nav>

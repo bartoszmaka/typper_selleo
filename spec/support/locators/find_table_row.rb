@@ -1,3 +1,7 @@
+
+# @Date:   2017-11-04 13:26:19
+# @Last Modified by:   Synion
+# @Last Modified time: 2017-11-06 21:42:59
 require 'rspec/expectations'
 
 module FindTableRow
@@ -52,7 +56,7 @@ module FindTableRow
     end
 
     def ensure_headers_presence!
-      expected_header_labels = column_expectations.keys.select{ |v| v.is_a? String }
+      expected_header_labels = column_expectations.keys.select { |v| v.is_a? String }
       missing_headers = expected_header_labels - table_header_labels
 
       if missing_headers.present?

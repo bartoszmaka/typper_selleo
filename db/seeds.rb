@@ -7,6 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 ImportTeams.call
-puts "Teams were imported"
+puts 'Teams were imported'
 ImportMatches.call
-puts "Matches were imported"
+puts 'Matches were imported'

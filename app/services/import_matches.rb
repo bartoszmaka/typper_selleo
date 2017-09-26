@@ -29,7 +29,7 @@ class ImportMatches < Patterns::Service
   end
 
   class UpsertMatch < Patterns::Service
-    attr_reader :round, :match_attributes, :match
+    attr_reader :round, :match_attributes, :match, :bet
 
     def initialize(round:, match_attributes:)
       @round = round
@@ -62,12 +62,40 @@ class ImportMatches < Patterns::Service
       Team.find_by!(name: match_attributes.away_team_name)
     end
 
+    def bets
+      Bet.where(football_match: match)
+    end
+
+    def update_bets
+      bets.each do |bet|
+        @bet = bet
+        set_bet_point
+      end
+    end
+
     def update_score
       if completed?
         match.update_attributes(
           home_team_score: match_attributes.home_team_score,
           away_team_score: match_attributes.away_team_score
         )
+        update_bets
+      end
+    end
+
+    def exact_score_matched?
+      (bet.home_team_score == match.home_team_score) && (bet.away_team_score == match.away_team_score)
+    end
+
+    def result_matched?
+      (bet.home_team_score <=> bet.away_team_score) == (match.home_team_score <=> match.away_team_score)
+    end
+
+    def set_bet_point
+      if exact_score_matched?
+        bet.update_attributes(point: 3)
+      elsif result_matched?
+        bet.update_attributes(point: 1)
       end
     end
   end

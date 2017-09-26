@@ -1,7 +1,13 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
+  enum role: { regular: 0, admin: 1 }
+  has_many :bets
+  devise :database_authenticatable,
          :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
+
+  def total_points
+    bets.sum(:point)
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info

@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915135145) do
+ActiveRecord::Schema.define(version: 20171103160845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bets", force: :cascade do |t|
+    t.integer "football_match_id"
+    t.integer "user_id"
+    t.integer "home_team_score", null: false
+    t.integer "away_team_score", null: false
+    t.integer "point", default: 0
+    t.index ["football_match_id"], name: "index_bets_on_football_match_id"
+    t.index ["point"], name: "index_bets_on_point"
+    t.index ["user_id"], name: "index_bets_on_user_id"
+  end
 
   create_table "football_matches", force: :cascade do |t|
     t.bigint "away_team_id"
@@ -26,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170915135145) do
     t.integer "round_id"
     t.index ["away_team_id"], name: "index_football_matches_on_away_team_id"
     t.index ["home_team_id"], name: "index_football_matches_on_home_team_id"
+    t.index ["round_id"], name: "index_football_matches_on_round_id"
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -45,9 +57,13 @@ ActiveRecord::Schema.define(version: 20170915135145) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "bets", "football_matches"
+  add_foreign_key "bets", "users"
+  add_foreign_key "football_matches", "rounds"
   add_foreign_key "football_matches", "teams", column: "away_team_id"
   add_foreign_key "football_matches", "teams", column: "home_team_id"
 end
