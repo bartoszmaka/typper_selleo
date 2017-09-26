@@ -33,3 +33,12 @@ en:
   time:
     formats:
       date_with_time: "%Y-%m-%d %H:%M"
+  pundit:
+    default: 'You cannot perform this action.'
+    football_match_policy:
+      new?: 'You can only create new bet when there is more than 1 hour before match starts'
+      create?: 'You can only create new bet when there is more than 1 hour before match starts'
+      edit?: 'You can only edit your bet when there is more than 1 hour before match starts'
+      update?: 'You can only update your bet when there is more than 1 hour before match starts'
+      destroy?: 'You can only destroy your bet when there is more than 1 hour before match starts'
+

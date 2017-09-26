@@ -1,25 +1,21 @@
-<table>
-  <thead>
-    <tr>
-      <th>Match Date</th>
-      <th>Home Team</th>
-      <th>Score Home</th>
-      <th>Score Away</th>
-      <th>Away Team</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% football_matches.each do |football_match| %>
+<% rounds.each do |round| %>
+ <strong><center>Round-<%= round.number %>  Year <%= round.year %></center></strong>
+ <br />
+  <table class= 'table table-hover'>
+    <thead class='table-inverse'>
       <tr>
-        <td><%= l(football_match.match_date, format: :date_with_time) %></td>
-        <td><%= football_match.home_team.name %></td>
-        <td><%= football_match.home_team_score || 0 %></td>
-        <td><%= football_match.away_team_score || 0 %></td>
-        <td><%= football_match.away_team.name %></td>
-        <td><%= link_to "Place Bet" if football_match.can_place_bet? %></td>
+        <th>Match Date</th>
+        <th>Home Team</th>
+        <th>Score Home</th>
+        <th>Score Away</th>
+        <th>Away Team</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <%= render round.football_matches %>
+    </tbody>
+  </table>
+  <br />
+  <br />
+<% end %>

@@ -1,0 +1,15 @@
+<tbody>
+  <tr>
+    <td><%= l(football_match.match_date, format: :date_with_time) %></td>
+    <td><%= football_match.home_team.name %></td>
+    <td><%= football_match.home_team_score || 0 %></td>
+    <td><%= football_match.away_team_score || 0 %></td>
+    <td><%= football_match.away_team.name %></td>
+    <td>
+      <% if policy([football_match, Bet]).new? %>
+        <%= render 'place_bet_button', football_match: football_match,
+          bet: football_match.current_user_bet(current_user) %>
+      <% end %>
+    </td>
+  </tr>
+</tbody>

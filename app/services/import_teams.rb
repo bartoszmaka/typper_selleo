@@ -1,6 +1,5 @@
 require 'open-uri'
 class ImportTeams < Patterns::Service
-
   def call
     teams_from_website.map { |team| Team.find_or_create_by(name: team.text) }
   end
