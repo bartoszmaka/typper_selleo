@@ -16,16 +16,7 @@
 require 'webmock/rspec'
 require 'capybara/rspec'
 require 'rspec/matchers/fail_matchers'
-require "vcr_helper"
-
-
-Capybara.javascript_driver = :poltergeist
-Capybara.ignore_hidden_elements = true
-Capybara.server_port = 7787
-
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
-end
+require 'vcr_helper'
 
 RSpec.configure do |config|
   config.include RSpec::Matchers::FailMatchers

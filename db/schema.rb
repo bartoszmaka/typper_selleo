@@ -10,17 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915135145) do
+ActiveRecord::Schema.define(version: 20170929104323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bets", force: :cascade do |t|
+    t.integer "football_match_id"
+    t.integer "user_id"
+    t.integer "home_team_score", null: false
+    t.integer "away_team_score", null: false
+    t.index ["football_match_id"], name: "index_bets_on_football_match_id"
+    t.index ["user_id"], name: "index_bets_on_user_id"
+  end
 
   create_table "football_matches", force: :cascade do |t|
     t.bigint "away_team_id"
     t.bigint "home_team_id"
     t.integer "away_team_score"
     t.integer "home_team_score"
-    t.datetime "match_date"
+    t.datetime "match_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "round_id"
@@ -48,7 +57,6 @@ ActiveRecord::Schema.define(version: 20170915135145) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "football_matches", "rounds"
   add_foreign_key "football_matches", "teams", column: "away_team_id"
   add_foreign_key "football_matches", "teams", column: "home_team_id"
 end

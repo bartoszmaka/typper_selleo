@@ -7,9 +7,7 @@ feature 'Home Page' do
       real      = create(:team, name: 'Real Madrid')
       juventus  = create(:team, name: 'Juventus')
       monaco    = create(:team, name: 'Monaco')
-
       round = create(:round)
-
       first_match = create(
         :football_match,
         match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw'),
@@ -26,10 +24,13 @@ feature 'Home Page' do
         away_team: monaco,
         round_id: round.id
       )
+
+      sign_in(create(:user))
+
       travel_to DateTime.new(2017, 9, 20, 11, 30).in_time_zone('Warsaw') do
         visit root_path
 
-        expect(page).to have_table_row('2017-09-21 14:30', 'Juventus', '0', '0', 'Monaco', have_button('a', text: 'Place Bet'))
+        expect(page).to have_table_row('2017-09-21 14:30', 'Juventus', '0', '0', 'Monaco', have_link('a', text: 'Place Bet'))
       end
     end
   end
