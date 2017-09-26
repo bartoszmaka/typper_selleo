@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20_171_103_160_845) do
     t.index ['away_team_id'], name: 'index_football_matches_on_away_team_id'
     t.index ['home_team_id'], name: 'index_football_matches_on_home_team_id'
     t.index ['round_id'], name: 'index_football_matches_on_round_id'
-
   end
 
   create_table 'rounds', force: :cascade do |t|
@@ -64,4 +63,7 @@ ActiveRecord::Schema.define(version: 20_171_103_160_845) do
   add_foreign_key 'bets', 'football_matches'
   add_foreign_key 'bets', 'users'
   add_foreign_key 'football_matches', 'rounds'
+  add_foreign_key 'football_matches', 'teams', column: 'away_team_id'
   add_foreign_key 'football_matches', 'teams', column: 'home_team_id'
+end
+
