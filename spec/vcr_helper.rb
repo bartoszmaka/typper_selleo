@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'vcr'
 
 VCR.configure do |config|

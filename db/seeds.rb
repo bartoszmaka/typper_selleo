@@ -8,3 +8,5 @@
 
 ImportTeams.call
 puts "Teams were imported"
+ImportMatches.call
+puts "Matches were imported"

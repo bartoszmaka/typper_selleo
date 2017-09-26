@@ -1,4 +1,3 @@
-
 <table>
   <thead>
     <tr>
@@ -14,12 +13,12 @@
   <tbody>
     <% football_matches.each do |football_match| %>
       <tr>
-        <td><%= football_match.match_date.localtime.to_formatted_s(:db) %></td>
+        <td><%= l(football_match.match_date, format: :date_with_time) %></td>
         <td><%= football_match.home_team.name %></td>
         <td><%= football_match.home_team_score || 0 %></td>
         <td><%= football_match.away_team_score || 0 %></td>
         <td><%= football_match.away_team.name %></td>
-        <td><%= link_to "Place Bet" if football_match.match_date > 1.hour.ago %></td>
+        <td><%= link_to "Place Bet" if football_match.can_place_bet? %></td>
       </tr>
     <% end %>
   </tbody>

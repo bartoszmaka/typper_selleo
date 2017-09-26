@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :team do
-    name 'Real'
+    sequence :name { |x| "FC Arka#{x}" }
   end
 end

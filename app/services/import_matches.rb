@@ -29,7 +29,7 @@ class ImportMatches < Patterns::Service
   end
 
   class UpsertMatch < Patterns::Service
-    attr_reader :round, :match_attributes
+    attr_reader :round, :match_attributes, :match
 
     def initialize(round:, match_attributes:)
       @round = round
@@ -37,15 +37,16 @@ class ImportMatches < Patterns::Service
     end
 
     def call
-      update_score
+      find_or_create_match &&
+        update_score
     end
 
     def completed?
       match_attributes.completed?
     end
 
-    def match
-      FootballMatch.find_or_create_by(
+    def find_or_create_match
+      @match = FootballMatch.find_or_create_by(
         match_date: match_attributes.match_date,
         home_team_id: home_team.id,
         away_team_id: away_team.id,
@@ -62,7 +63,6 @@ class ImportMatches < Patterns::Service
     end
 
     def update_score
-      match
       if completed?
         match.update_attributes(
           home_team_score: match_attributes.home_team_score,

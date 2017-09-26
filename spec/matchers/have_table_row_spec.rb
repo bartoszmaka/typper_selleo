@@ -19,7 +19,7 @@ describe 'have_table_row matcher' do
         expect(page).to have_table_row('Name' => 'John', 'Age' => 27)
         expect(page).to have_table_row(0 => 'John', 1 => 27)
         expect(page).to have_table_row('John', 27)
-        expect(page).to have_table_row(include('oh'), 27)
+        expect(page).to have_table_row(have_content('oh'), 27)
       end
     end
 
@@ -99,7 +99,7 @@ describe 'have_table_row matcher' do
 
         expect do
           expect(page).to have_table_row('John', 27)
-        end.to fail_with('Ambigous match, there is more than one table')
+        end.to fail_with('Ambiguous match, there is more than one table')
       end
 
       it 'ensures that page have table with given data' do
@@ -129,6 +129,3 @@ describe 'have_table_row matcher' do
     end
   end
 end
-# expect(page).to have_table_row(0 => "John", 1 => 27)
-# expect(page).to have_table_row("John", 27)
-# expect(page).to have_table_row(include("oh"), 27) # page 224 of Effective testing with Rspec

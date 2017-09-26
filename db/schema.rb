@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(version: 20170915135145) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "football_matches", "rounds"
   add_foreign_key "football_matches", "teams", column: "away_team_id"
   add_foreign_key "football_matches", "teams", column: "home_team_id"
 end
