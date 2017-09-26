@@ -1,0 +1,8 @@
+<% if user_signed_in? %>
+  <% if bet %>
+    <%= link_to "#{bet.home_team_score} - #{bet.away_team_score}", edit_football_match_bet_path(football_match, bet), class: "btn btn-info btn-sm" %>
+    <%= link_to 'x', football_match_bet_path(football_match, bet), class: "btn btn-danger btn-sm", method: :delete%>
+  <% else %>
+    <%= link_to 'Place Bet', new_football_match_bet_path(football_match), class: "btn btn-info btn-sm" %>
+  <% end %>
+<% end %>

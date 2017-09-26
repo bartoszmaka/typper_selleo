@@ -25,3 +25,4 @@ config/database.yml
 .env
 spec/examples.txt
 fixtures/*
+.idea/

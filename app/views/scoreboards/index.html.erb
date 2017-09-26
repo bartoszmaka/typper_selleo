@@ -1,0 +1,22 @@
+<table class="table table-inverse">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <% rounds.map do |round| %>
+        <th>Round<%= round.number %></th>
+      <% end %>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <% rounds.each do |round| %>
+          <td><%= round.user_score(user.id) %></td>
+        <% end %>
+        <td><%= user.total_points %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

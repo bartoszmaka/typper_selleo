@@ -6,12 +6,16 @@ git_source(:github) do |repo_name|
 end
 
 ruby '2.4.0'
+gem 'bootstrap', '~> 4.0.0.beta'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise', '~> 4.3'
+gem 'draper', '~> 3.0', '>= 3.0.1'
 gem 'jbuilder', '~> 2.5'
+gem 'jquery-rails'
 gem 'omniauth-google-oauth2', '~> 0.5.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
+gem 'pundit', '~> 1.1'
 gem 'rails', '~> 5.1.3'
 gem 'rails-patterns'
 gem 'sass-rails', '~> 5.0'
@@ -31,6 +35,7 @@ end
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'pundit-matchers', '~> 1.3.1'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'vcr', '~> 3.0', '>= 3.0.3'
   gem 'webmock', '~> 3.0', '>= 3.0.1'

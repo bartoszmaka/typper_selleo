@@ -31,7 +31,11 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :feature
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  config.include Features::SessionHelper, type: :feature
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

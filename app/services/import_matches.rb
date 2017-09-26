@@ -62,12 +62,33 @@ class ImportMatches < Patterns::Service
       Team.find_by!(name: match_attributes.away_team_name)
     end
 
+    def bet
+      Bet.find_by(football_match: match)
+    end
+
     def update_score
       if completed?
         match.update_attributes(
           home_team_score: match_attributes.home_team_score,
           away_team_score: match_attributes.away_team_score
         )
+        set_bet_point if bet.present?
+      end
+    end
+
+    def exact_score_matched?
+      (bet.home_team_score == match.home_team_score) && (bet.away_team_score == match.away_team_score)
+    end
+
+    def result_matched?
+      (bet.home_team_score <=> bet.away_team_score) == (match.home_team_score <=> match.away_team_score)
+    end
+
+    def set_bet_point
+      if exact_score_matched?
+        bet.update_attributes(point: 3)
+      elsif result_matched?
+        bet.update_attributes(point: 1)
       end
     end
   end
