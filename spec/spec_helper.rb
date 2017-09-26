@@ -16,8 +16,21 @@
 require 'webmock/rspec'
 require 'capybara/rspec'
 require 'rspec/matchers/fail_matchers'
+require "vcr_helper"
+
+
+Capybara.javascript_driver = :poltergeist
+Capybara.ignore_hidden_elements = true
+Capybara.server_port = 7787
+
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
+end
+
 RSpec.configure do |config|
   config.include RSpec::Matchers::FailMatchers
+  config.extend VCR::RSpec::Macros
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

@@ -29,7 +29,7 @@ feature 'Home Page' do
       travel_to DateTime.new(2017, 9, 20, 11, 30).in_time_zone('Warsaw') do
         visit root_path
 
-        expect(page).to have_table_row('2017-09-21 14:30', 'Juventus', '0', '0', 'Monaco', have_selector('a', text: 'Place Bet'))
+        expect(page).to have_table_row('2017-09-21 14:30', 'Juventus', '0', '0', 'Monaco', have_button('a', text: 'Place Bet'))
       end
     end
   end

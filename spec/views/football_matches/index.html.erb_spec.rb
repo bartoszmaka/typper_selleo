@@ -21,7 +21,7 @@ describe 'football_matches/index.html.erb' do
         page = Capybara.string(rendered)
         row = page.find_table_row('Home Team' => 'Barcelona', 'Away Team' => 'Real Madrid')
 
-        expect(row).to have_link('Place Bet')
+        expect(row).to have_button('Place Bet')
       end
     end
   end
@@ -46,7 +46,7 @@ describe 'football_matches/index.html.erb' do
         page = Capybara.string(rendered)
         row = page.find_table_row('Home Team' => 'Barcelona', 'Away Team' => 'Real Madrid')
 
-        expect(row).not_to have_link('Place Bet')
+        expect(row).not_to have_button('Place Bet')
       end
     end
   end
