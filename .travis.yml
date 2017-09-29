@@ -12,3 +12,6 @@ script:
 
 addons:
   postgresql: '9.5'
+
+env:
+  - GOAL_COM_WRAPPER_URL=http://www.goal.com/en/uefa-champions-league/fixtures-results/week-1/4oogyu6o156iphvdvphwpck10
