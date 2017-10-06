@@ -1,15 +1,18 @@
 class BetsController < ApplicationController
   def edit
+    authorize football_match
     render locals: { form: BetForm.new(bet, {}),
                      football_match: football_match }
   end
 
   def new
+    authorize football_match
     render locals: { form: BetForm.new(Bet.new, {}),
                      football_match: football_match }
   end
 
   def update
+    authorize football_match
     form = BetForm.new(bet,
                        params[:bet].merge(user_id: current_user.id,
                                           football_match_id: params[:football_match_id]))
@@ -23,6 +26,7 @@ class BetsController < ApplicationController
   end
 
   def create
+    authorize football_match
     form = BetForm.new(Bet.new,
                        params[:bet].merge(user_id: current_user.id,
                                           football_match_id: params[:football_match_id]))
@@ -36,6 +40,7 @@ class BetsController < ApplicationController
   end
 
   def destroy
+    authorize football_match
     if bet.destroy
       redirect_to root_path, notice: 'Bet succesfully deleted'
     else
