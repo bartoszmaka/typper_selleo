@@ -1,0 +1,8 @@
+<% if form.errors.any? %>
+    <% form.errors.full_messages.each do |message| %>
+      <div class="alert alert-danger">
+        <button class="close" data-dismiss="alert">×</button>
+        <%= message %>
+      </div>
+    <% end %>
+<% end %>
