@@ -8,12 +8,10 @@ describe BetForm do
 
       form = BetForm.new(
         Bet.new,
-        {
-          user_id: user.id,
-          football_match_id: match.id,
-          home_team_score: 4,
-          away_team_score: 1
-        }
+        user_id: user.id,
+        football_match_id: match.id,
+        home_team_score: 4,
+        away_team_score: 1
       )
 
       expect { form.save }.to change { Bet.count }.by 1
@@ -26,16 +24,15 @@ describe BetForm do
 
     form = BetForm.new(
       Bet.new,
-      {
-        user_id: user.id,
-        football_match_id: match.id,
-        home_team_score: -3,
-        away_team_score: 1
-      }
+      user_id: user.id,
+      football_match_id: match.id,
+      home_team_score: -3,
+      away_team_score: -1
     )
 
     expect { form.save }.to change { Bet.count }.by 0
     expect(form.errors).to have_key(:home_team_score)
+    expect(form.errors).to have_key(:away_team_score)
   end
 
   it 'requires football_match_id' do
@@ -43,18 +40,15 @@ describe BetForm do
 
     form = BetForm.new(
       Bet.new,
-      {
-        user_id: user.id,
-        football_match_id: nil,
-        home_team_score: 4,
-        away_team_score: 1
-      }
+      user_id: user.id,
+      football_match_id: nil,
+      home_team_score: 4,
+      away_team_score: 1
     )
 
     expect { form.save }.to change { Bet.count }.by 0
     expect(form.errors).to have_key(:football_match_id)
   end
-
 
   it 'requires user_id' do
     match = create(:football_match)
@@ -75,30 +69,17 @@ describe BetForm do
     it "user can't bet on the same match twice " do
       user = create(:user)
       match = create(:football_match)
+      create(:bet, user_id: user.id, football_match_id: match.id)
 
       form = BetForm.new(
         Bet.new,
-        {
-          user_id: user.id,
-          football_match_id: match.id,
-          home_team_score: 4,
-          away_team_score: 1
-        }
+        user_id: user.id,
+        football_match_id: match.id,
+        home_team_score: 4,
+        away_team_score: 1
       )
 
-      expect { form.save }.to change { Bet.count }.by 1
-
-      form = BetForm.new(
-        Bet.new,
-        {
-          user_id: user.id,
-          football_match_id: match.id,
-          home_team_score: 4,
-          away_team_score: 1
-        }
-      )
-      
-      expect { form.save }.not_to change { Bet.count }
+      expect { form.save }.not_to(change { Bet.count })
     end
   end
 end

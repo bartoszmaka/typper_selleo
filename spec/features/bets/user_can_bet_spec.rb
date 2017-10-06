@@ -6,13 +6,13 @@ feature 'Bets management' do
     real = create(:team, name: 'Real Madrid')
     fc_porto = create(:team, name: 'Fc Porto')
     first_match = create(:football_match,
-           home_team: barcelona,
-           away_team: monaco,
-           match_date: DateTime.new(2017, 10, 10, 12, 30).in_time_zone('Warsaw'))
+                         home_team: barcelona,
+                         away_team: monaco,
+                         match_date: DateTime.new(2017, 10, 10, 12, 30).in_time_zone('Warsaw'))
     second_match = create(:football_match,
-          home_team: real,
-          away_team: fc_porto,
-          match_date: DateTime.new(2017, 10, 10, 12, 30).in_time_zone('Warsaw'))
+                          home_team: real,
+                          away_team: fc_porto,
+                          match_date: DateTime.new(2017, 10, 10, 12, 30).in_time_zone('Warsaw'))
 
     travel_to(DateTime.new(2017, 10, 9, 12, 30)) do
       oauth_login_user(email: 'bartex@selleo.com')
@@ -71,23 +71,19 @@ feature 'Bets management' do
   def oauth_login_user(email:)
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(
-      {
-        provider: 'google',
-        uid: '12345678910',
-        info: {
-          email: 'bartex@selleo.com',
-          first_name: 'Jesse',
-          last_name: 'Spevack'
-        },
-        credentials: {
-          token: 'abcdefg12345',
-          refresh_token: '12345abcdefg',
-          expires_at: DateTime.now
-        }
+      provider: 'google',
+      uid: '12345678910',
+      info: {
+        email: email
+      },
+      credentials: {
+        token: 'abcdefg12345',
+        refresh_token: '12345abcdefg',
+        expires_at: DateTime.now
       }
     )
-    Rails.application.env_config["devise.mapping"] = Devise.mappings[:user] # If using Devise
-    Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:default]
+    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user] # If using Devise
+    Rails.application.env_config['omniauth.auth'] = OmniAuth.config.mock_auth[:default]
     visit user_google_oauth2_omniauth_authorize_path
     OmniAuth.config.mock_auth[:default][:info][:email]
   end

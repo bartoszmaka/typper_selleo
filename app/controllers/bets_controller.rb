@@ -1,6 +1,6 @@
 class BetsController < ApplicationController
   def edit
-    render locals: { bet: Bet.find(params[:id]),
+    render locals: { bet: bet,
                      football_match: FootballMatch.find(params[:football_match_id])}
   end
 
@@ -14,8 +14,12 @@ class BetsController < ApplicationController
     form = BetForm.new(bet,
                        params[:bet].merge(user_id: current_user.id,
                                           football_match_id: params[:football_match_id]))
-    form.save
-    redirect_to root_path
+    if form.save
+      redirect_to root_path, notice: 'Bet succesfully updated'
+    else
+      flash[:alert] = 'Could not update bet'
+      render 'edit'
+    end
   end
 
   def create
@@ -23,13 +27,26 @@ class BetsController < ApplicationController
     form = BetForm.new(bet,
                        params[:bet].merge(user_id: current_user.id,
                                           football_match_id: params[:football_match_id]))
-    form.save
-    redirect_to root_path
+    if form.save
+      redirect_to root_path, notice: 'Bet succesfully created'
+    else
+      flash[:alert] = 'Could not create bet'
+      render 'new'
+    end
   end
 
   def destroy
     bet = Bet.find(params[:id])
-    bet.destroy
-    redirect_to root_path
+    if bet.destroy
+      redirect_to root_path, notice: 'Bet succesfully deleted'
+    else
+      redirect_to root_path, alert: 'Bet succesfully deleted'
+    end
+  end
+
+  private
+
+  def bet
+    @bet ||= Bet.find(params[:id])
   end
 end
