@@ -1,7 +1,3 @@
-
-# @Date:   2017-11-04 13:26:19
-# @Last Modified by:   Synion
-# @Last Modified time: 2017-11-06 21:42:59
 require 'rspec/expectations'
 
 module FindTableRow

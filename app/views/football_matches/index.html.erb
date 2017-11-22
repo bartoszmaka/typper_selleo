@@ -1,7 +1,9 @@
 <br />
 <% rounds.each do |round| %>
- <strong><center>Round-<%= round.number %>  Year <%= round.year %></center></strong>
- <br />
+
+  <div id= "round-<%= round.id  %>" >
+  <strong><center>Round-<%= round.number %>  Year <%= round.year %></center></strong>
+  <br />
   <table class= 'table table-hover'>
     <thead class='table-inverse'>
       <tr>
@@ -14,9 +16,10 @@
       </tr>
     </thead>
     <tbody>
-      <%= render round.football_matches %>
+      <%= render round.football_matches.order('match_date ASC') %>
     </tbody>
   </table>
+  </div>
   <br />
   <br />
 <% end %>

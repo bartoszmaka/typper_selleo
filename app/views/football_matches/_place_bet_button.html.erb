@@ -7,7 +7,6 @@
       <%= link_to 'Place Bet', new_football_match_bet_path(football_match), class: "btn btn-info btn-sm" %>
     <% end %>
   <% elsif  bet && policy([football_match, bet]).show? %>
-
     <%= "#{bet.home_team_score} - #{bet.away_team_score}" %>
   <% end %>
 <% end %>

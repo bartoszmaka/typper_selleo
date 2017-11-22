@@ -1,8 +1,8 @@
 <%= render 'form_errors', form: form %>
 <%= form_for [football_match, form] do |f| %>
   <%= f.label :home_team_score, football_match.home_team.name %>
-  <%= f.number_field :home_team_score %>
+  <%= f.number_field :home_team_score, min: 0 %>
   <%= f.label :away_team_score, football_match.away_team.name %>
-  <%= f.number_field :away_team_score %>
-  <%= f.submit 'Place Bet', class: "btn btn-default" %>
+  <%= f.number_field :away_team_score, min: 0 %>
+  <%= f.submit 'Place Bet', class: "btn btn-info btn-sm" %>
 <% end %>

@@ -8,23 +8,21 @@ describe 'football_matches/index.html.erb' do
       real = create(:team, name: 'Real Madrid')
       round = create(:round)
       rounds = Round.all
+      create(
+        :football_match,
+        home_team: barcelona,
+        away_team: real,
+        round: round,
+        match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw')
+      )
+
       allow(view).to receive(:policy) do |record|
         Pundit.policy(User.last, record)
       end
       allow(view).to receive(:bet) { Bet.new }
       allow(view).to receive(:rounds) { rounds }
       allow(rounds).to receive(:each).and_yield(round)
-      allow(round).to receive(:football_matches) {
-        [
-          create(
-            :football_match,
-            home_team: barcelona,
-            away_team: real,
-            round: round,
-            match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw')
-          )
-        ]
-      }
+      allow(round).to receive(:football_matches).and_call_original
 
       travel_to(DateTime.new(2017, 9, 20, 13, 29).in_time_zone('Warsaw')) do
         render
@@ -42,6 +40,14 @@ describe 'football_matches/index.html.erb' do
       barcelona = create(:team, name: 'Barcelona')
       real = create(:team, name: 'Real Madrid')
       round = create(:round)
+      create(
+        :football_match,
+        home_team: barcelona,
+        away_team: real,
+        round: round,
+        match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw')
+      )
+
       rounds = Round.all
       allow(view).to receive(:policy) do |record|
         Pundit.policy(User.last, record)
@@ -49,17 +55,7 @@ describe 'football_matches/index.html.erb' do
       allow(view).to receive(:bet) { Bet.new }
       allow(view).to receive(:rounds) { rounds }
       allow(rounds).to receive(:each).and_yield(round)
-      allow(round).to receive(:football_matches) {
-        [
-          create(
-            :football_match,
-            home_team: barcelona,
-            away_team: real,
-            round: round,
-            match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw')
-          )
-        ]
-      }
+      allow(round).to receive(:football_matches).and_call_original
 
       travel_to(DateTime.new(2017, 9, 20, 13, 31).in_time_zone('Warsaw')) do
         render
