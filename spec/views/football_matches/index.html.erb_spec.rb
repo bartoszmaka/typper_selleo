@@ -23,6 +23,8 @@ describe 'football_matches/index.html.erb' do
       allow(view).to receive(:rounds) { rounds }
       allow(rounds).to receive(:each).and_yield(round)
       allow(round).to receive(:football_matches).and_call_original
+      allow(rounds).to receive(:current_page).and_return(1)
+      allow(rounds).to receive(:total_pages).and_return(1)
 
       travel_to(DateTime.new(2017, 9, 20, 13, 29).in_time_zone('Warsaw')) do
         render
@@ -40,6 +42,7 @@ describe 'football_matches/index.html.erb' do
       barcelona = create(:team, name: 'Barcelona')
       real = create(:team, name: 'Real Madrid')
       round = create(:round)
+      rounds = Round.all
       create(
         :football_match,
         home_team: barcelona,
@@ -48,7 +51,6 @@ describe 'football_matches/index.html.erb' do
         match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw')
       )
 
-      rounds = Round.all
       allow(view).to receive(:policy) do |record|
         Pundit.policy(User.last, record)
       end
@@ -56,6 +58,8 @@ describe 'football_matches/index.html.erb' do
       allow(view).to receive(:rounds) { rounds }
       allow(rounds).to receive(:each).and_yield(round)
       allow(round).to receive(:football_matches).and_call_original
+      allow(rounds).to receive(:current_page).and_return(1)
+      allow(rounds).to receive(:total_pages).and_return(1)
 
       travel_to(DateTime.new(2017, 9, 20, 13, 31).in_time_zone('Warsaw')) do
         render

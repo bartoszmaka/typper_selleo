@@ -79,7 +79,7 @@ describe ImportMatches do
     end
 
     context 'when all rounds are completed' do
-      it 'change #user_score in round' do
+      it 'change  #user_score in round' do
         matches_round_1 = <<~RATE_PLAN
           WEEK 1 >
           Time              | Team  home  | Team away     | Score home | Score away | completed

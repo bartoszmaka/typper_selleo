@@ -1,6 +1,9 @@
 <br />
-<% rounds.each do |round| %>
+<div id= 'header'>
+  <%= paginate rounds, class: "pagination-sm" %>
+</div>
 
+<% rounds.each do |round| %>
   <div id= "round-<%= round.id  %>" >
   <strong><center>Round-<%= round.number %>  Year <%= round.year %></center></strong>
   <br />
