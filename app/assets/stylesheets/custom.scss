@@ -25,3 +25,56 @@
    color: white !important;
    border: none;
  }
+
+.form-bet {
+  flex-direction: column;
+
+  &__form {
+    display: flex;
+    padding: 17px;
+    width: 100%;
+    align-items: center;
+
+    .team-name {
+      flex-grow: 1;
+      flex-basis: 10px;
+      font-weight: bold;
+      display: block;
+
+      &:first-of-type {
+        text-align: right;
+      }
+
+      &:last-of-type {
+        text-align: left;
+      }
+    }
+
+    &__inputs {
+      display: flex;
+      align-items: baseline;
+      margin: 0 7px;
+
+      input {
+        max-width: 55px;
+        padding-right: 4px;
+      }
+
+      .separator {
+        margin: 0 5px;
+      }
+    }
+  }
+
+  &__action {
+    padding-bottom: 17px;
+  }
+}
+
+.input-short {
+  max-width: 150px !important;
+}
+
+.btn {
+  cursor: pointer;
+}

@@ -1,8 +1,16 @@
 <%= render 'form_errors', form: form %>
-<%= form_for [football_match, form] do |f| %>
-  <%= f.label :home_team_score, football_match.home_team.name %>
-  <%= f.number_field :home_team_score, min: 0 %>
-  <%= f.label :away_team_score, football_match.away_team.name %>
-  <%= f.number_field :away_team_score, min: 0 %>
-  <%= f.submit 'Place Bet', class: "btn btn-info btn-sm" %>
+<%= form_for([football_match, @form], remote: true, html: { data: { modal: true }, class: 'form-inline form-bet'}) do |f| %>
+  <div class= 'form-bet__form'>
+    <%= f.label :home_team_score, football_match.home_team.name, class: 'team-name' %>
+    <div class='form-bet__form__inputs'>
+      <%= f.number_field :home_team_score, min: 0, class: "form-control" %>
+      <span class='separator'>:</span>
+      <%= f.number_field :away_team_score, min: 0, class: "form-control" %>
+    </div>
+    <%= f.label :away_team_score, football_match.away_team.name, class: 'team-name' %>
+  </div>
+  <div class='form-bet__action'>
+    <%= f.submit 'Place Bet', class: "btn btn-info"%>
+  </div>
 <% end %>
+
