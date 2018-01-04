@@ -43,8 +43,8 @@ feature 'Home Page' do
         real      = create(:team, name: 'Real Madrid')
         juventus  = create(:team, name: 'Juventus')
         monaco    = create(:team, name: 'Monaco')
-        round = create(:round, number: 1)
-        round_second = create(:round, number: 2)
+        round = create(:round, name: 1)
+        round_second = create(:round, name: 2)
 
         create(:football_match,
                match_date: DateTime.new(2017, 9, 20, 14, 30).in_time_zone('Warsaw'),

@@ -7,11 +7,7 @@ class ImportMatches < Patterns::Service
     end
 
     def match_round
-      if round.number > 0
-        Round.find_or_create_by(year: round.year, number: round.number)
-      else
-        Round.find_or_create_by(year: round.year, number: 7)
-      end
+      Round.find_or_create_by(year: round.year, name: round.name)
     end
 
     def call

@@ -7,9 +7,9 @@ feature 'Scoreboard' do
         oauth_login_user(email: 'example.first@selleo.com')
         user_1 = User.find_by(email: 'example.first@selleo.com')
         user_2 = create(:user, email: 'example.second@selleo.com')
-        round_1 = create(:round, number: 1)
-        round_2 = create(:round, number: 2)
-        4.times { |number| create(:round, number: number + 3) }
+        round_1 = create(:round, name: 1)
+        round_2 = create(:round, name: 2)
+        4.times { |number| create(:round, name: number.to_i + 3) }
 
         football_match1 = create(:football_match, match_date: DateTime.new(2017, 10, 10, 12, 30), round_id: round_1.id)
         football_match2 = create(:football_match, match_date: DateTime.new(2017, 10, 11, 12, 30), round_id: round_2.id)

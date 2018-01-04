@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :round do
-    number 1
-    year 2017
+    name 1
+    year '2017/2018'
   end
 end
