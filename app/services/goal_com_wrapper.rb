@@ -8,12 +8,16 @@ class GoalComWrapper
       @url = url
     end
 
-    def number
+    def name
       doc.css('div.nav-switch__label strong').text[/\d/].to_i
     end
 
+    def is_a_round?
+      doc.css('div.nav-switch__label strong').text[/\d/].present?
+    end
+
     def year
-      DateTime.parse(doc.css('div.match-main-data').first.css('time').attribute('datetime').value).year
+      DateTime.parse(doc.css('div.match-main-data').first.css('time').attribute('datetime').value).year.to_s
     end
 
     def next_page_link
@@ -78,8 +82,10 @@ class GoalComWrapper
 
     begin
       round = Round.new(url: next_url)
-      yield(round)
-      next_url = round.next_page_link
-    end while !round.last?
+      if round.is_a_round?
+        yield(round)
+        next_url = round.next_page_link
+      end
+    end while !round.last? && round.is_a_round?
   end
 end

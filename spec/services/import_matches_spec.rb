@@ -34,12 +34,12 @@ describe ImportMatches do
         end.to change { FootballMatch.count }.by(4).and change { Round.count }.by(2)
 
         expect(Round.all).to include(
-          have_attributes(year: 2017, number: 1),
-          have_attributes(year: 2017, number: 2)
+          have_attributes(year: '2017', name: 1),
+          have_attributes(year: '2017', name: 2)
         )
 
-        round_first = Round.find_by(year: 2017, number: 1)
-        round_second = Round.find_by(year: 2017, number: 2)
+        round_first = Round.find_by(year: '2017', name: 1)
+        round_second = Round.find_by(year: '2017', name: 2)
 
         expect(FootballMatch.all).to include(
           have_attributes(
@@ -106,8 +106,8 @@ describe ImportMatches do
 
         ImportMatches.call
 
-        round_first = Round.find_by(year: 2017, number: 1)
-        round_second = Round.find_by(year: 2017, number: 2)
+        round_first = Round.find_by(year: '2017', name: 1)
+        round_second = Round.find_by(year: '2017', name: 2)
 
         football_match_1 = FootballMatch.find_by(home_team: monaco, away_team: porto)
         football_match_2 = FootballMatch.find_by(home_team: real, away_team: barcelona)
@@ -159,12 +159,12 @@ describe ImportMatches do
         end.to change { FootballMatch.count }.by(4).and change { Round.count }.by(2)
 
         expect(Round.all).to include(
-          have_attributes(year: 2017, number: 1),
-          have_attributes(year: 2017, number: 2)
+          have_attributes(year: '2017', name: 1),
+          have_attributes(year: '2017', name: 2)
         )
 
-        round_first = Round.find_by(year: 2017, number: 1)
-        round_second = Round.find_by(year: 2017, number: 2)
+        round_first = Round.find_by(year: '2017', name: 1)
+        round_second = Round.find_by(year: '2017', name: 2)
 
         expect(FootballMatch.all).to include(
           have_attributes(
@@ -233,12 +233,12 @@ describe ImportMatches do
           end.to change { FootballMatch.count }.by(4).and change { Round.count }.by(2)
 
           expect(Round.all).to include(
-            have_attributes(year: 2017, number: 1),
-            have_attributes(year: 2017, number: 2)
+            have_attributes(year: '2017', name: 1),
+            have_attributes(year: '2017', name: 2)
           )
 
-          round_first = Round.find_by(year: 2017, number: 1)
-          round_second = Round.find_by(year: 2017, number: 2)
+          round_first = Round.find_by(year: '2017', name: 1)
+          round_second = Round.find_by(year: '2017', name: 2)
 
           expect(FootballMatch.all).to include(
             have_attributes(
@@ -298,8 +298,8 @@ describe ImportMatches do
             ImportMatches.call
           end.to change { FootballMatch.count }.by(0).and(change { Round.count }.by(0))
 
-          round_first = Round.find_by(year: 2017, number: 1)
-          round_second = Round.find_by(year: 2017, number: 2)
+          round_first = Round.find_by(year: '2017', name: 1)
+          round_second = Round.find_by(year: '2017', name: 2)
 
           expect(FootballMatch.all).to include(
             have_attributes(
@@ -412,7 +412,7 @@ describe ImportMatches do
   end
 
   def result_from(tabular_data)
-    round_number = tabular_data.lines.first.split(' ').second.to_i
+    round_number = tabular_data.lines.first.split(' ').second
     matches = tabular_data.lines[3..-1].map do |line|
       date, home_team_name, away_team_name, home_team_score,
         away_team_score, completed = line.split('|').map(&:strip)
@@ -426,6 +426,6 @@ describe ImportMatches do
                       away_team_score: away_team_score.to_i,
                       completed?: completed == 'true')
     end
-    instance_double(GoalComWrapper::Round, number: round_number, year: matches.first.match_date.year, matches: matches)
+    instance_double(GoalComWrapper::Round, name: round_number, year: matches.first.match_date.year.to_s, matches: matches)
   end
 end
